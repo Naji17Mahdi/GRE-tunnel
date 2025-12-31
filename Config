@@ -1,0 +1,62 @@
+IN BR1:
+Router>enable 
+Router#configure 
+interface GigabitEthernet0/0
+Router(config-if)#no shutdown
+Router(config-if)#ip address 192.168.10.2 255.255.255.0
+Router(config)#router eigrp 1
+Router(config-router)#network 192.168.10.0
+Router(config-router)#exit 
+Router(config)#interface tunnel 0
+
+Router(config-if)#
+%LINK-5-CHANGED: Interface Tunnel0, changed state to up
+
+Router(config-if)#tunnel source gigabitEthernet 0/0
+Router(config-if)#tunnel destination 192.168.40.2 
+Router(config-if)#ip address 192.168.40.1 255.255.255.0
+
+IN BR2:
+Router>enable 
+Router#configure 
+Router(config)#interface GigabitEthernet0/0
+Router(config-if)#no shutdown
+Router(config-if)#ip address 192.168.20.2 255.255.255.0
+Router(config)#router eigrp 1
+Router(config-router)#network 192.168.20.0
+Router(config-router)#exit
+Router(config)#interface tunnel 0
+
+Router(config-if)#
+%LINK-5-CHANGED: Interface Tunnel0, changed state to up
+
+Router(config-if)#tunnel source gigabitEthernet 0/0
+Router(config-if)#tunnel destination 192.168.30.2
+Router(config-if)#ip address 192.168.50.1 255.255.255.0
+
+IN HQ:
+Router>enable 
+Router#configure 
+Router(config)#interface GigabitEthernet0/0
+Router(config-if)#no shutdown
+ip address 192.168.30.2 255.255.255.0
+Router(config)#router eigrp 1
+Router(config-router)#network 192.168.30.0
+Router(config-router)#exit 
+Router(config)#interface tunnel 0
+
+Router(config-if)#
+%LINK-5-CHANGED: Interface Tunnel0, changed state to up
+
+Router(config-if)#tunnel source gigabitEthernet 0/0
+Router(config-if)#tunnel destination 192.168.10.2
+Router(config-if)#ip address 192.168.40.2 255.255.255.0
+Router(config-if)#exit 
+Router(config)#interface tunnel 1
+
+Router(config-if)#
+%LINK-5-CHANGED: Interface Tunnel1, changed state to up
+
+Router(config-if)#tunnel source gigabitEthernet 0/0
+Router(config-if)#tunnel destination 192.168.20.2
+Router(config-if)#ip address 192.168.50.2 255.255.255.0
